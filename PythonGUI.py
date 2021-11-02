@@ -1,4 +1,8 @@
-from tkinter.constants import ACTIVE
+# Python GUI Demo
+# Quick Python GUI with PySimpleGUI
+# Yu Hin Hau
+# 11/2/2021
+
 import PySimpleGUI as sg
 from PySimpleGUI.PySimpleGUI import Column
 
@@ -29,13 +33,20 @@ def main():
 
     # Set GUI Theme
     sg.theme("DarkBlue")
+    
 
     #Set GUI Layout and Create Window
+
+    col_layout = sg.Column( [
+            [sg.In(size=(10,10), font='Arial 20', key='-IN1-')],
+            [sg.In(size=(10,5), font='Arial 20', key='-IN2-')]
+        ])
+
     layout = [[
         Column([
         [sg.Text('Python GUI Demo', font='Arial 12 bold')],
         [sg.HorizontalSeparator()],
-        [sg.Column( [[sg.In(size=(10,10), font='Arial 20', key='-IN1-')],[sg.In(size=(10,5), font='Arial 20', key='-IN2-')]]), sg.Listbox(values=['ADD','SUBTRACT','MULTIPLY','DIVIDE', 'CUSTOM'], default_values=['ADD'], size=(10,5), key='-ACTION-')],
+        [col_layout, sg.Listbox(values=['ADD','SUBTRACT','MULTIPLY','DIVIDE', 'CUSTOM'], default_values=['ADD'], size=(10,5), key='-ACTION-')],
         [sg.Multiline(size=(35,5), key='-OUT-', disabled=True)],
         [sg.Button('Calculate', size=(32,2), key='-CALC-')]
     ], element_justification='center')]]
@@ -62,29 +73,30 @@ def main():
         # Execution Actions when Calculate Button is Pressed
         if event == '-CALC-':
             OUT.update(disabled=False)
+
+            val1 = float(IN1.get())
+            val2 = float(IN2.get())
             
             if ACTION.get()[0] == 'ADD':
-                sum = float(IN1.get()) + float(IN2.get())
-                OUT.update(f'The sum of {IN1.get()} and {IN2.get()} is {sum}')
+                sum = float(val1) + float(val2)
+                OUT.update(f'The sum of {val1} and {val2} is {sum}')
 
             if ACTION.get()[0] == 'SUBTRACT':
-                diff = float(IN1.get()) - float(IN2.get())
-                OUT.update(f'The differences of {IN1.get()} and {IN2.get()} is {diff}')
+                diff = float(val1) - float(val2)
+                OUT.update(f'The differences of {val1} and {val2} is {diff}')
 
 
             if ACTION.get()[0] == 'MULTIPLY':
-                prod = float(IN1.get()) * float(IN2.get())
-                OUT.update(f'The product of {IN1.get()} and {IN2.get()} is {prod}')
+                prod = float(val1) * float(val2)
+                OUT.update(f'The product of {val1} and {val2} is {prod}')
 
 
             if ACTION.get()[0] == 'DIVIDE':
-                quotient = float(IN1.get()) / float(IN2.get())
-                OUT.update(f'The quotient of {IN1.get()} and {IN2.get()} is {quotient}')
+                quotient = float(val1) / float(val2)
+                OUT.update(f'The quotient of {val1} and {val2} is {quotient}')
 
 
             if ACTION.get()[0] == 'CUSTOM':
-                val1 = float(IN1.get())
-                val2 = float(IN2.get())
 
                 # Start Custom Thread to Avoid Frozen GUI
                 x = threading.Thread(target=func_custom, args={val1, val2})
